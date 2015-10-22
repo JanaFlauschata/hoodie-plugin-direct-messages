@@ -2,5 +2,5 @@
   "name": "hoodie-plugin-direct-messages",
   "description": "Allows users to send direct messages to each other",
   "version": "1.0.0",
-  "main": "index.js"
+  "main": "worker.js"
 }
