@@ -14,7 +14,7 @@ Hoodie.extend(function(hoodie) {
 	}
 
 	function findAll(){
-		var defer = hoodie.defer();
+		var defer = $.Deferred();
 		hoodie.store.findAll('message')
 			.done(defer.resolve)
 			.fail(defer.reject)
