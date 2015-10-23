@@ -1,28 +1,36 @@
-module.exports = function(hoodie, done) {
-  hoodie.task.on('directmessage:add', handleNewMessage);
+module.exports = function (hoodie, done) {
+    hoodie.task.on('directmessage:add', handleNewMessage);
 
-  function handleNewMessage(originDb, message) {
-    var recipient = message.to;
-    hoodie.account.find('user', recipient,
-    function(error, user) {
-      if (error) {
-        return hoodie.task.error(originDb, message, error);
-      };
-      var targetDb = 'user/' + user.hoodieId;
+    function handleNewMessage(originDb, message) {
+        var recipient = message.to;
 
-	//delete message._id;
-	//delete message._rev;
+        // workaround to ensure the task will be found when calling success
+        var id = message.id;
+        var type = message.type;
 
-      hoodie.database(targetDb).add('directmessage',
-      message,
-      function addMessageCallback(error, message) {
-    if(error){
-        return hoodie.task.error(originDb, message, error);
-    }
-    return hoodie.task.success(originDb, message);
-  });
-    });
-  };
+        hoodie.account.find('user', recipient,
+            function (error, user) {
+                if (error) {
+                    return hoodie.task.error(originDb, message, error);
+                }
+                ;
+                var targetDb = 'user/' + user.hoodieId;
 
-  done();
+                hoodie.database(targetDb).add('directmessage',
+                    message,
+                    function (error, message) {
+                        if (error) {
+                            return hoodie.task.error(originDb, message, error2);
+                        }
+
+                        // resetting id and type to identify the original task
+                        message.id = id;
+                        message.type = type;
+
+                        return hoodie.task.success(originDb, message);
+                    });
+            });
+    };
+
+    done();
 };
