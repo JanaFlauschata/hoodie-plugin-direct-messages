@@ -20,7 +20,7 @@ module.exports = function (hoodie, done) {
                     message,
                     function (error, message) {
                         if (error) {
-                            return hoodie.task.error(originDb, message, error2);
+                            return hoodie.task.error(originDb, message, error);
                         }
 
                         // resetting id and type to identify the original task
