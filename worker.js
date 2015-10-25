@@ -16,6 +16,10 @@ module.exports = function (hoodie, done) {
                 ;
                 var targetDb = 'user/' + user.hoodieId;
 
+		// workaround to prevent document update conflicts
+		delete message._id;
+		delete message._rev;
+
                 hoodie.database(targetDb).add('directmessage',
                     message,
                     function (error, message) {

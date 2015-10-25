@@ -4,11 +4,8 @@ Hoodie.extend(function (hoodie) {
         var defer = $.Deferred();
 
         hoodie.task.start('directmessage', messageData)
-            .done(function (messageTask) {
-                hoodie.task.on('remove:directmessage:' + messageTask.id, defer.resolve);
-                hoodie.task.on('error:directmessage:' + messageTask.id, defer.reject);
-            })
-            .fail(defer.reject);
+         	.done(function(messageTask){ defer.resolve(messageTask);});
+	 	.fail(function(messageTask){ defer.reject();});
 
         return defer.promise();
     }
